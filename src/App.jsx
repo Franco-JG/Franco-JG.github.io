@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
+import Navbar from './components/Navbar';
 import './styles/App.css';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -9,7 +10,7 @@ const Scene = lazy(() => import('./three/Scene'));
 
 function App() {
   return (
-    <Router>
+    <>
       <div className="fixed-canvas">
         <Canvas
           style={{ height: '100vh', width: '100vw', background: 'black' }}
@@ -21,13 +22,16 @@ function App() {
           </Suspense>
         </Canvas>
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </Suspense>
-    </Router>
+      <Router>
+        <Navbar />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </>
   );
 }
 
