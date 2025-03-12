@@ -1,28 +1,33 @@
 import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
-import LoadingBar from './LoadingBar';
+import './styles/App.css';
 
-// Lazy load components
-const Sphere = lazy(() => import('./Sphere'));
-const Particles = lazy(() => import('./Particles'));
-const Postprocessing = lazy(() => import('./Postprocessing'));
-
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Scene = lazy(() => import('./three/Scene'));
 
 function App() {
   return (
-    <>
-      <Canvas
-        style={{ height: '100vh', width: '100vw', background: 'black' }}
-        camera={{ position: [35, -10, 22], fov: 45}}
-        dpr={window.devicePixelRatio}
-      >
-        <Suspense fallback={<LoadingBar/>}>
-          <Sphere />
-          <Particles />
-          <Postprocessing />
-        </Suspense>
-      </Canvas>
-    </>
+    <Router>
+      <div className="fixed-canvas">
+        <Canvas
+          style={{ height: '100vh', width: '100vw', background: 'black' }}
+          camera={{ position: [35, -10, 22], fov: 45 }}
+          dpr={window.devicePixelRatio}
+        >
+          <Suspense fallback={null}>
+            <Scene />
+          </Suspense>
+        </Canvas>
+      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </Suspense>
+    </Router>
   );
 }
 
