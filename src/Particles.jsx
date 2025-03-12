@@ -3,9 +3,9 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const PARTICLE_COUNT = 3000;
-const MAX_DISTANCE = 70;
+const MAX_DISTANCE = 50;
 const DISPLACEMENT = 3;
-const MAX_Y_DISPERSION = 5;
+const MAX_Y_DISPERSION = 3;
 const CENTRAL_MASS = 0.1;
 const DT = 0.06;
 
@@ -35,7 +35,7 @@ function Particles() {
       positionsArray[index + 1] = radius * Math.sin(theta); // y
       positionsArray[index + 2] = (Math.random() - 0.5) * yDispersion * 2; // z
 
-      sizesArray[i] = Math.random() < 0.01 ? 1.5 : 0.1 + Math.random() * 0.5;
+      sizesArray[i] = Math.random() < 0.01 ? 1 : 0.1 + Math.random() * 0.5;
     }
 
     if (particlesRef.current) {
@@ -88,6 +88,7 @@ function Particles() {
         blending={THREE.AdditiveBlending}
         depthTest={false}
         transparent={true}
+        toneMapped={false}
       />
     </points>
   );

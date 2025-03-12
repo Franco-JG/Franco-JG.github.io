@@ -1,45 +1,51 @@
-import React, { useRef, useEffect } from 'react';
-import { Canvas, extend, useThree, useFrame } from '@react-three/fiber';
-import { Sphere, OrbitControls } from '@react-three/drei'; // Eliminamos OrbitControls
-import { EffectComposer, RenderPass, UnrealBloomPass } from 'three-stdlib';
+import React from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Sphere, OrbitControls } from '@react-three/drei';
+import { EffectComposer, Bloom, BrightnessContrast, HueSaturation } from '@react-three/postprocessing';
+import { KernelSize } from 'postprocessing';
 import Particles from './Particles';
 import CameraControls from './CameraControls';
-import * as THREE from 'three';
 
-// Extender los componentes de postprocesado
-extend({ EffectComposer, RenderPass, UnrealBloomPass });
+function BloomEffect() {
 
-function Bloom() {
-  const { scene, gl, camera } = useThree();
-  const composer = useRef();
+  const { size } = useThree();
 
-  useEffect(() => {
-    composer.current = new EffectComposer(gl);
-    composer.current.addPass(new RenderPass(scene, camera));
-    composer.current.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2.5, 0.9, 0.2));
-  }, [scene, gl, camera]);
-
-  useFrame(() => composer.current && composer.current.render(), 1);
-
-  return null;
+  return (
+    <EffectComposer>
+      <Bloom
+        intensity={5}
+        kernelSize={KernelSize.VERY_SMALL}
+        luminanceThreshold={0.6}
+        luminanceSmoothing={0.6}
+        mipmapBlur
+        width={size.width}
+        height={size.height}
+      />
+      <BrightnessContrast brightness={0.02} contrast={0.2}/>
+      <HueSaturation hue={0} saturation={0.30} />
+    </EffectComposer>
+  );
 }
 
 function App() {
   return (
     <>
       <Canvas
-        style={{ height: '100vh', width: '100vw' }}
-        camera={{ position: [0, 0, 60], fov: 45 }}
+        style={{ height: '100vh', width: '100vw', background: 'black'  }}
+        camera={{ position: [70, -20, 45], fov: 45 }}
+        dpr={window.devicePixelRatio}
       >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <Particles />
-        <CameraControls />
-        <OrbitControls />
-        <Sphere args={[2, 32, 32]} position={[0, 0, 0]}>
-          <meshStandardMaterial attach="material" color="white" emissive="white" emissiveIntensity={1} />
+        <Sphere args={[2, 16, 16]} position={[0, 0, 0]}>
+          <meshStandardMaterial
+            attach="material"
+            color="white"
+            emissive="white"
+            emissiveIntensity={1.5}
+          />
         </Sphere>
-        <Bloom />
+        <Particles />
+        <BloomEffect />
+        <OrbitControls />
       </Canvas>
       {/* <div style={{ height: '300vh' }}></div> */}
     </>
