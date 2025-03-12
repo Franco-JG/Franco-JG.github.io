@@ -1,53 +1,27 @@
-import React from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Sphere, OrbitControls } from '@react-three/drei';
-import { EffectComposer, Bloom, BrightnessContrast, HueSaturation } from '@react-three/postprocessing';
-import { KernelSize } from 'postprocessing';
-import Particles from './Particles';
-import CameraControls from './CameraControls';
+import { lazy, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import LoadingBar from './LoadingBar';
 
-function BloomEffect() {
+// Lazy load components
+const Sphere = lazy(() => import('./Sphere'));
+const Particles = lazy(() => import('./Particles'));
+const Postprocessing = lazy(() => import('./Postprocessing'));
 
-  const { size } = useThree();
-
-  return (
-    <EffectComposer>
-      <Bloom
-        intensity={5}
-        kernelSize={KernelSize.VERY_SMALL}
-        luminanceThreshold={0.6}
-        luminanceSmoothing={0.6}
-        mipmapBlur
-        width={size.width}
-        height={size.height}
-      />
-      <BrightnessContrast brightness={0.02} contrast={0.2}/>
-      <HueSaturation hue={0} saturation={0.30} />
-    </EffectComposer>
-  );
-}
 
 function App() {
   return (
     <>
       <Canvas
-        style={{ height: '100vh', width: '100vw', background: 'black'  }}
-        camera={{ position: [70, -20, 45], fov: 45 }}
+        style={{ height: '100vh', width: '100vw', background: 'black' }}
+        camera={{ position: [35, -10, 22], fov: 45}}
         dpr={window.devicePixelRatio}
       >
-        <Sphere args={[2, 16, 16]} position={[0, 0, 0]}>
-          <meshStandardMaterial
-            attach="material"
-            color="white"
-            emissive="white"
-            emissiveIntensity={1.5}
-          />
-        </Sphere>
-        <Particles />
-        <BloomEffect />
-        <OrbitControls />
+        <Suspense fallback={<LoadingBar/>}>
+          <Sphere />
+          <Particles />
+          <Postprocessing />
+        </Suspense>
       </Canvas>
-      {/* <div style={{ height: '300vh' }}></div> */}
     </>
   );
 }

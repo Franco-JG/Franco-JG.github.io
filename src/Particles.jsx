@@ -1,10 +1,10 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { BufferAttribute, TextureLoader, Color, AdditiveBlending } from 'three';
 
-const PARTICLE_COUNT = 3000;
-const MAX_DISTANCE = 50;
-const DISPLACEMENT = 3;
+const PARTICLE_COUNT = 1000;
+const MAX_DISTANCE = 30;
+const DISPLACEMENT = 1;
 const MAX_Y_DISPERSION = 3;
 const CENTRAL_MASS = 0.1;
 const DT = 0.06;
@@ -39,12 +39,12 @@ function Particles() {
     }
 
     if (particlesRef.current) {
-      particlesRef.current.setAttribute('position', new THREE.BufferAttribute(positionsArray, 3));
-      particlesRef.current.setAttribute('size', new THREE.BufferAttribute(sizesArray, 1));
+      particlesRef.current.setAttribute('position', new BufferAttribute(positionsArray, 3));
+      particlesRef.current.setAttribute('size', new BufferAttribute(sizesArray, 1));
     }
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (particlesRef.current) {
       const positionsArray = positions.current;
       const anglesArray = angles.current;
@@ -66,12 +66,14 @@ function Particles() {
       <bufferGeometry ref={particlesRef} />
       <shaderMaterial
         uniforms={{
-          pointTexture: { value: new THREE.TextureLoader().load('white.png') },
-          particleColor: { value: new THREE.Color("rgb(225, 143, 255)") }
+          pointTexture: { value: new TextureLoader().load('white.png') },
+          particleColor: { value: new Color("rgb(225, 143, 255)") }
         }}
         vertexShader={`
           attribute float size;
+          varying float vSize;
           void main() {
+            vSize = size;
             vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
             gl_PointSize = size * (300.0 / -mvPosition.z);
             gl_Position = projectionMatrix * mvPosition;
@@ -80,15 +82,17 @@ function Particles() {
         fragmentShader={`
           uniform sampler2D pointTexture;
           uniform vec3 particleColor;
+          varying float vSize;
           void main() {
-            gl_FragColor = vec4(particleColor, 2.4);
+            float alpha = vSize * 2.0;
+            gl_FragColor = vec4(particleColor, alpha);
             gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
           }
         `}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
         depthTest={false}
         transparent={true}
-        toneMapped={false}
+        // toneMapped={false}
       />
     </points>
   );
