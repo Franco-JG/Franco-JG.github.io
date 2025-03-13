@@ -14,7 +14,7 @@ function App() {
       <div className="fixed-canvas">
         <Canvas
           style={{ height: '100vh', width: '100vw', background: 'black' }}
-          camera={{ position: [35, -10, 22], fov: 45 }}
+          camera={{ position: [17, -5, 11], fov: 45 }}
           dpr={window.devicePixelRatio}
         >
           <Suspense fallback={null}>

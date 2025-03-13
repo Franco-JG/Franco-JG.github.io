@@ -2,12 +2,12 @@ import { useRef, useLayoutEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { BufferAttribute, TextureLoader, Color, AdditiveBlending } from 'three';
 
-const PARTICLE_COUNT = 1000;
-const MAX_DISTANCE = 30;
+const PARTICLE_COUNT = 500;
+const MAX_DISTANCE = 20;
 const DISPLACEMENT = 1;
-const MAX_Y_DISPERSION = 3;
+const MAX_Y_DISPERSION = 5;
 const CENTRAL_MASS = 0.1;
-const DT = 0.06;
+const DT = 0.007;
 
 function Particles() {
   const particlesRef = useRef();
@@ -84,7 +84,7 @@ function Particles() {
           uniform vec3 particleColor;
           varying float vSize;
           void main() {
-            float alpha = vSize * 2.0;
+            float alpha = vSize * 3.0;
             gl_FragColor = vec4(particleColor, alpha);
             gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
           }
