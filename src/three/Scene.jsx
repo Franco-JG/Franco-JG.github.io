@@ -1,44 +1,57 @@
-import { useFrame } from '@react-three/fiber';
-import { useRef, lazy } from 'react';
+import { OrbitControls, ScrollControls, useScroll } from '@react-three/drei';
+import { useRef, lazy, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { Color } from 'three';
 
 const Particles = lazy(() => import('./Particles'));
 const Postprocessing = lazy(() => import('./Postprocessing'));
 
+function Sphere(){
+  return (
+    <mesh>
+      <sphereGeometry args={[0.5, 16, 16]} />
+      <meshStandardMaterial
+        color= {new Color("rgb(255, 255, 255)")}
+        emissive={new Color("rgb(255, 255, 255)")}
+        emissiveIntensity={5.5}
+      />
+    </mesh>
+  );
+}
+
+export const FLOOR_HEIGHT = 2.3;
+export const NB_FLOORS = 3;
+
 function Scene() {
-  const materialRef = useRef();
+  const ref = useRef();
+  const tl = useRef();
 
-  // useFrame(({ clock }) => {
-  //   const time = clock.getElapsedTime();
+  const scroll = useScroll();
 
-  //   // Oscilación base suave entre 1 y 1.3
-  //   const baseOscillation = 1 + Math.sin(time * 3) * 0.3; // Resultado: 1 -> 1.3
+  useLayoutEffect(() => {
+    tl.current = gsap.timeline();
 
-  //   // Parpadeo aleatorio ocasional que sube hasta 1.5
-  //   const randomFlicker = (Math.random() > 0.92) ? Math.random() * 10 : 0; // Hasta 0.2 extra
-
-  //   // Combinamos ambos efectos
-  //   let intensity = baseOscillation + randomFlicker;
-
-  //   // Limita a un máximo de 1.5, y mínimo de 1
-  //   intensity = Math.min(Math.max(intensity, 1), 1.5);
-
-  //   if (materialRef.current) {
-  //     materialRef.current.emissiveIntensity = intensity;
-  //   }
-  // });
+    // Animación de rotación en Y y Z
+    tl.current.to(
+      ref.current.rotation,
+      {
+        duration: 3,
+        y: Math.PI * 2, // Rotación completa en Y
+        z: Math.PI / 4, // Rotación de 45 grados en Z
+      },
+      0
+    );
+  }, []);
 
   return (
     <>
-      <mesh>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial
-          ref={materialRef}
-          color="white"
-          emissive="white"
-          emissiveIntensity={1}
-        />
-      </mesh>
-      <Particles />
+      <OrbitControls  />
+      <ScrollControls pages={3} damping={0.25}>
+        <group ref={ref}>
+          <Sphere/>
+          <Particles />
+        </group>
+      </ScrollControls>
       <Postprocessing />
     </>
   );

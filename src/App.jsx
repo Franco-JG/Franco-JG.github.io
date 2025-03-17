@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import Navbar from './components/Navbar';
 import './styles/App.css';
+import Postprocessing from './three/Postprocessing';
+import { Color } from 'three';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -13,16 +15,16 @@ function App() {
     <>
       <div className="fixed-canvas">
         <Canvas
-          style={{ height: '100vh', width: '100vw', background: 'black' }}
-          camera={{ position: [17, -5, 11], fov: 45 }}
+          camera={{ position: [10, -3, 20], fov: 45 }}
           dpr={window.devicePixelRatio}
-        >
-          <Suspense fallback={null}>
+          gl={{alpha: false, antialias: true}}
+          scene={{background: new Color(0x000000)}}
+          >
+          <fog attach="fog" args={['#ffffff', 10, 50]} />
             <Scene />
-          </Suspense>
         </Canvas>
       </div>
-      <Router>
+      {/* <Router>
         <Navbar />
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
@@ -30,7 +32,7 @@ function App() {
             <Route path="/about" element={<About />} />
           </Routes>
         </Suspense>
-      </Router>
+      </Router> */}
     </>
   );
 }

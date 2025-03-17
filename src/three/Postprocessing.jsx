@@ -1,25 +1,22 @@
-import { useThree } from '@react-three/fiber';
-import { EffectComposer, Bloom, BrightnessContrast, HueSaturation } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, HueSaturation, Pixelation  } from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
 
 function Postprocessing() {
 
-  const { size } = useThree();
-
   return (
-    <>
-      <EffectComposer>
+      <EffectComposer
+
+      >
         <Bloom
-          intensity={5}
-          luminanceThreshold={0.1}
-          luminanceSmoothing={1}
+          intensity={2}
+          luminanceThreshold={0.4}
+          luminanceSmoothing={0.8}
           mipmapBlur
-          width={size.width}
-          height={size.height}
+          blendFunction={BlendFunction.ALPHA}
+          // opacity={0.7}
         />
-        <BrightnessContrast brightness={0.02} contrast={0.2}/>
-        <HueSaturation hue={0} saturation={0.30} />
+        {/* <HueSaturation hue={0} saturation={0.30} /> */}
       </EffectComposer>
-    </>
   );
 }
 

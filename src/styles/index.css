@@ -1,16 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-body {
+html, body {
   margin: 0;
   padding: 0;
-  overflow: auto; /* Asegúrate de que el body permita el scroll */
-  background-color: black;
+  overflow: auto; 
+  /* background-color: black; */
   font-family: 'Roboto', sans-serif; /* Aplica la fuente Roboto */
-}
-
-canvas {
-  display: block;
-  position: fixed; /* Fija el canvas para que ocupe toda la pantalla */
-  width: 100%;
-  height: 100%;
 }
