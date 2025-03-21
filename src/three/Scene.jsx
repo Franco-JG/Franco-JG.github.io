@@ -1,58 +1,114 @@
-import { OrbitControls, ScrollControls, useScroll } from '@react-three/drei';
-import { useRef, lazy, useLayoutEffect } from 'react';
+import { useThree } from '@react-three/fiber';
+import { useRef, lazy, useLayoutEffect, useEffect } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Color } from 'three';
+import lenis from '../utils/lenis';
 
 const Particles = lazy(() => import('./Particles'));
 const Postprocessing = lazy(() => import('./Postprocessing'));
 
-function Sphere(){
+function Sphere() {
   return (
     <mesh>
-      <sphereGeometry args={[0.5, 16, 16]} />
+      <sphereGeometry args={[0.5, 8, 8]} />
       <meshStandardMaterial
-        color= {new Color("rgb(255, 255, 255)")}
+        color={new Color("rgb(255, 255, 255)")}
         emissive={new Color("rgb(255, 255, 255)")}
         emissiveIntensity={5.5}
+        // wireframe
       />
     </mesh>
   );
 }
 
-export const FLOOR_HEIGHT = 2.3;
-export const NB_FLOORS = 3;
-
 function Scene() {
   const ref = useRef();
   const tl = useRef();
+  const { camera } = useThree(); // Accede a la cámara de Three.js
+  const isMobile = window.innerWidth < 768;
 
-  const scroll = useScroll();
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+  
+    // Conectar Lenis con GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+  
+    // Configurar GSAP para usar Lenis
+    gsap.ticker.lagSmoothing(0);
+    
+    function update(time) {
+      lenis.raf(time * 1000);
+    }
+    
+    gsap.ticker.add(update);
+  
+    return () => {
+      gsap.ticker.remove(update);
+      lenis.destroy();
+    };
+  }, []);
 
   useLayoutEffect(() => {
-    tl.current = gsap.timeline();
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Animación de rotación en Y y Z
+    tl.current = gsap.timeline({
+      scrollTrigger: {
+      trigger: document.documentElement, // Usa el elemento raíz del documento
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true, // hace que el timeline se sincronice con el scroll
+      // markers: true, // activa para debuggear
+      }
+    });
+
+    // Animación del mesh
     tl.current.to(
       ref.current.rotation,
       {
         duration: 3,
-        y: Math.PI * 2, // Rotación completa en Y
-        z: Math.PI / 4, // Rotación de 45 grados en Z
+        x: -Math.PI / 4, // 45 grados
+        y: -Math.PI / 3, // 120 grados
       },
       0
     );
-  }, []);
+    tl.current.to(
+      ref.current.position,
+      {
+        duration: 3,
+        x: isMobile ? 2 : 10,
+        y: isMobile ? -5 : 0,
+        z: -10,
+        ease: "power2.inOut",
+      },
+      0
+    );
+
+    // Animación de la cámara (paneo paralelo)
+    tl.current.to(
+      camera.position,
+      {
+        duration: 3,
+        x: isMobile ? 5 : 10, // Mueve la cámara hacia la derecha en el eje X
+        onUpdate: () => camera.lookAt(0,0,-10),
+      },
+      0
+    );
+
+    // return () => {
+    //   ScrollTrigger.kill(); // limpia los triggers al desmontar
+    // };
+
+  }, [camera]);
 
   return (
     <>
-      <OrbitControls  />
-      <ScrollControls pages={3} damping={0.25}>
-        <group ref={ref}>
-          <Sphere/>
-          <Particles />
-        </group>
-      </ScrollControls>
-      <Postprocessing />
+      <group ref={ref}>
+        {/* <axesHelper args={[20]} /> */}
+        <Sphere />
+        <Particles />
+        {/* <Postprocessing /> */}
+      </group>
     </>
   );
 }

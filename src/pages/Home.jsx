@@ -12,20 +12,10 @@ const Home = () => {
         <h2>Quién soy</h2>
         <p>Bienvenido a mi portafolio. Soy Franco, un desarrollador apasionado por la tecnología y la innovación.</p>
       </BlurCard>
-      <BlurCard>
-        <h2>Mi pasión</h2>
-        <h1>
-            <Typewriter
-              options={{
-                strings: ['Lesly 🍑'],
-                autoStart: true,
-                loop: true,
-              }}
-            /> y los autos
-        </h1>
-      </BlurCard>
-      {/* Añade más contenido según sea necesario */}
+      
       <Lorem/>
+      <Lorem/>
+      
     </div>
   );
 };

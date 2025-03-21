@@ -2,8 +2,8 @@ import { useRef, useLayoutEffect, useCallback } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { BufferAttribute, TextureLoader, Color, AdditiveBlending } from 'three';
 
-const PARTICLE_COUNT = 500;
-const MAX_DISTANCE = 50;
+const PARTICLE_COUNT = 50;
+const MAX_DISTANCE = 30;
 const DISPLACEMENT = 1;
 const MAX_Y_DISPERSION = 3;
 const CENTRAL_MASS = 0.1;
