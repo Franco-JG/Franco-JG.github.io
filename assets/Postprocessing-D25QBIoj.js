@@ -1,0 +1,1 @@
+import{j as n,e as t,w as s,B as e,T as i}from"./react-three-BQ8--DpI.js";import"./three-core-DRk8PRKa.js";function a(){return n.jsxs(t,{children:[n.jsx(s,{intensity:2,luminanceThreshold:.4,luminanceSmoothing:.8,mipmapBlur:!0,blendFunction:e.ALPHA}),n.jsx(i,{hue:0,saturation:.3})]})}export{a as default};
