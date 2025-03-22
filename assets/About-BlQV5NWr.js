@@ -1,1 +1,0 @@
-import{j as r}from"./react-three-BQ8--DpI.js";import{B as e,L as s}from"./Lorem-DRHRCOs3.js";import"./three-core-DRk8PRKa.js";const t=()=>r.jsxs("div",{className:"relative-content",children:[r.jsxs(e,{children:[r.jsx("h2",{children:"Sobre mí"}),r.jsx("p",{children:"Aquí puedes agregar información adicional sobre ti."})]}),r.jsx(s,{}),r.jsx(s,{})]});export{t as default};
