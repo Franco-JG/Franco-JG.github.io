@@ -1,3 +1,4 @@
+import { Billboard } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useRef, lazy, useLayoutEffect, useEffect } from 'react';
 import gsap from 'gsap';
@@ -11,7 +12,7 @@ const Postprocessing = lazy(() => import('./Postprocessing'));
 function Sphere() {
   return (
     <mesh>
-      <sphereGeometry args={[0.5, 8, 8]} />
+      <sphereGeometry args={[0.5, 32, 32]} />
       <meshStandardMaterial
         color={new Color("rgb(255, 255, 255)")}
         emissive={new Color("rgb(255, 255, 255)")}
@@ -20,6 +21,23 @@ function Sphere() {
       />
     </mesh>
   );
+}
+
+function Circle(){
+  return(
+    <Billboard
+    >
+      <mesh>
+        <circleGeometry args={[0.5, 16]} />
+        <meshStandardMaterial
+          color={new Color("rgb(255, 255, 255)")}
+          emissive={new Color("rgb(255, 255, 255)")}
+          emissiveIntensity={5.5}
+          // wireframe
+        />
+      </mesh>
+    </Billboard>
+  )
 }
 
 function Scene() {
@@ -58,7 +76,7 @@ function Scene() {
       start: "top top",
       end: "bottom bottom",
       scrub: true, // hace que el timeline se sincronice con el scroll
-      // markers: true, // activa para debuggear
+      markers: true, // activa para debuggear
       }
     });
 
@@ -79,7 +97,7 @@ function Scene() {
         x: isMobile ? 2 : 10,
         y: isMobile ? -5 : 0,
         z: -10,
-        ease: "power2.inOut",
+        ease: "power2.in",
       },
       0
     );
@@ -104,11 +122,11 @@ function Scene() {
   return (
     <>
       <group ref={ref}>
-        {/* <axesHelper args={[20]} /> */}
-        <Sphere />
+        <axesHelper args={[20]} />
+        <Circle/>
         <Particles />
-        {/* <Postprocessing /> */}
       </group>
+      <Postprocessing />
     </>
   );
 }
