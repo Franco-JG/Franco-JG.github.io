@@ -1,19 +1,31 @@
-import React from 'react';
+import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import './Navbar.css';
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-      </ul>
-    </nav>
+    <AppBar position="fixed" sx={{ background: 'rgba(0, 0, 0, 0.8)' }}>
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Franco's Portfolio
+        </Typography>
+        <Box>
+          <Button
+            component={Link}
+            to="/"
+            sx={{ color: 'white', textTransform: 'none', fontSize: '1rem' }}
+          >
+            Home
+          </Button>
+          <Button
+            component={Link}
+            to="/about"
+            sx={{ color: 'white', textTransform: 'none', fontSize: '1rem' }}
+          >
+            About
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 
