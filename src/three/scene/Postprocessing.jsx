@@ -1,10 +1,7 @@
-import { EffectComposer, Bloom, SelectiveBloom  } from '@react-three/postprocessing';
-import { useThree } from '@react-three/fiber';
+import { EffectComposer, Bloom} from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 
-function Postprocessing() {
-
-  const {scene} = useThree();
+const Postprocessing = () => {
 
   return (
       <EffectComposer
