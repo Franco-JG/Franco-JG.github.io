@@ -1,16 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Color } from 'three';
 import { Stats } from '@react-three/drei';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Scene from '../three/scene/Scene';
 import lenis from '../utils/lenis';
+const Postprocessing = lazy(() => import('../three/scene/Postprocessing'));
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
+
 
 const WelcomeExperience = ({ onComplete }) => {
   const [animationProgress, setAnimationProgress] = useState(0);
@@ -27,13 +29,13 @@ const WelcomeExperience = ({ onComplete }) => {
     if (mainContent) {
       mainContent.style.position = 'relative';
       mainContent.style.top = '0';
-      mainContent.style.pointerEvents = 'none'; // Desactivar interacciones
+      mainContent.style.pointerEvents = 'none'; // Desactivar interacciones inicialmente
     }
     
     // Crear un contenedor de scroll "fantasma" para extender el área de desplazamiento
     const scrollContainer = document.createElement('div');
     scrollContainer.id = 'scroll-animation-container';
-    scrollContainer.style.height = '100vh'; // Usar 1000vh para tener más espacio de scroll
+    scrollContainer.style.height = '1000vh'; // Aumentado a 1000vh para tener más espacio de scroll
     scrollContainer.style.width = '100%';
     scrollContainer.style.position = 'absolute';
     scrollContainer.style.top = '0';
@@ -50,8 +52,8 @@ const WelcomeExperience = ({ onComplete }) => {
         end: "+=600vh", // La animación dura 6 veces el alto de la ventana
         scrub: 2, // Hacer el scrub más suave para que la animación sea más fluida
         pin: true, // Mantener el contenedor "fijo" durante toda la animación
-        // pinSpacing: true, // Crear espacio para el contenido que viene después
-        // anticipatePin: 1, // Mejorar el rendimiento del pin
+        pinSpacing: true, // Crear espacio para el contenido que viene después
+        
         onUpdate: (self) => {
           // Actualizar el progreso de la animación
           setAnimationProgress(self.progress);
@@ -62,17 +64,23 @@ const WelcomeExperience = ({ onComplete }) => {
             
             // Habilitar el contenido principal
             if (mainContent) {
-              mainContent.style.pointerEvents = 'all';
+              mainContent.style.pointerEvents = 'auto'; // Habilitar interacciones
+              mainContent.style.zIndex = 20; // Asegurar z-index adecuado
+            }
+            
+            // Ocultar el contenedor de la experiencia de bienvenida una vez completada
+            if (containerRef.current) {
+              containerRef.current.style.pointerEvents = 'none';
+              containerRef.current.style.zIndex = 5; // Reducir su z-index
             }
             
             // Notificar que la animación está completa después de un pequeño delay
-            // para permitir que la transición sea suave
             setTimeout(() => {
               onComplete();
             }, 100);
           }
         },
-        markers: process.env.NODE_ENV === 'development',
+        // markers: process.env.NODE_ENV === 'development',
       }
     });
     
@@ -97,7 +105,7 @@ const WelcomeExperience = ({ onComplete }) => {
       
       // Restaurar el contenido principal
       if (mainContent) {
-        mainContent.style.pointerEvents = 'all';
+        mainContent.style.pointerEvents = 'auto';
       }
     };
   }, [onComplete]);
@@ -109,8 +117,9 @@ const WelcomeExperience = ({ onComplete }) => {
         height: '100vh', 
         width: '100%', 
         position: 'relative',
-        zIndex: 10,
+        zIndex: animationProgress >= 1.0 ? 5 : 10, // Reducir z-index al finalizar
         overflow: 'hidden',
+        pointerEvents: animationProgress >= 1.0 ? 'none' : 'auto', // Desactivar pointer events al finalizar
       }}
     >
       <Canvas
@@ -136,8 +145,9 @@ const WelcomeExperience = ({ onComplete }) => {
           height: '100%',
         }}
       >
-        <Stats />
+        {/* <Stats /> */}
         <Scene progress={animationProgress} isMobile={isMobile} />
+        <Postprocessing/>
       </Canvas>
       
       {/* Indicador de progreso (opcional) */}
@@ -152,12 +162,20 @@ const WelcomeExperience = ({ onComplete }) => {
             textAlign: 'center',
             zIndex: 100,
             opacity: (animationProgress - 0.95) * 20, // Aparece gradualmente
+            pointerEvents: 'none', // No debe interferir con clics
           }}
         >
-          <Typography variant="body1">
-            Ver más 
-            <Box component={ExpandMoreIcon}></Box>
-          </Typography>
+          <Stack 
+            direction="row" 
+            spacing={1} 
+            alignItems="center" 
+            justifyContent="center"
+          >
+            <Typography variant="body1" sx={{ display: 'inline', mb: 0 }}>
+              Ver más
+            </Typography>
+            <ExpandMoreIcon sx={{ fontSize: 28, mt: 0.5 }} /> 
+          </Stack>
         </Box>
       )}
     </Box>

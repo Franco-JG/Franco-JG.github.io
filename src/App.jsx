@@ -16,9 +16,6 @@ function App() {
     // Initialize smooth scrolling
     initSmoothScroll();
     
-    // Precargar los componentes del Home para mayor rapidez
-    // const loadHome = import('./pages/Home');
-    
     // Asegurar que el scroll esté al inicio al cargar la página
     window.scrollTo(0, 0);
     
@@ -33,19 +30,18 @@ function App() {
       <WelcomeExperience onComplete={() => setAnimationComplete(true)} />
       
       {/* Router y contenido principal - aparece después de la experiencia de bienvenida */}
-      <div 
-        id="main-content"
-        style={{ 
-          position: 'relative',
-          opacity: animationComplete ? 1 : 0,
-          transition: 'opacity 1s ease-in',
-          pointerEvents: animationComplete ? 'auto' : 'none',
-          // Ya no necesitamos marginTop aquí porque ScrollTrigger con pin
-          // y pinSpacing creará el espacio necesario
-        }}
-      >
-        <Router>
-          <Navbar />
+      <Router>
+        <div 
+          id="main-content"
+          style={{ 
+            position: 'relative',
+            opacity: animationComplete ? 1 : 0,
+            transition: 'opacity 1s ease-in',
+            pointerEvents: animationComplete ? 'auto' : 'none',
+            zIndex: animationComplete ? 20 : -1, // Asegurar que tenga un z-index adecuado
+          }}
+        >
+          <Navbar animationComplete={animationComplete} />
           <Suspense fallback={
             <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Typography variant="h5">Cargando...</Typography>
@@ -56,8 +52,8 @@ function App() {
               <Route path="/about" element={<About />} />
             </Routes>
           </Suspense>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }
