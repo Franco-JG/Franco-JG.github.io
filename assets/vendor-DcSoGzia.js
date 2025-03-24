@@ -1,4 +1,4 @@
-import{r as O}from"./react-three-kig-QZXa.js";var y={exports:{}},n={};/**
+import{r as O}from"./react-three-SB0_oqID.js";var y={exports:{}},n={};/**
  * @license React
  * react-dom.production.js
  *
