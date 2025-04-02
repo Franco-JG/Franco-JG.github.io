@@ -1,0 +1,1 @@
+import{j as r}from"./react-three-Cw19KN4Y.js";import{L as s}from"./Lorem-BjZ4K5sp.js";import"./three-core-CHufNl8Z.js";import"./styles-B6NggkPT.js";function m(){return r.jsxs(r.Fragment,{children:[r.jsxs("div",{children:[r.jsx("h1",{children:"About"}),r.jsx("p",{children:"This is the about page."})]}),r.jsx(s,{lorems:10})]})}export{m as default};
