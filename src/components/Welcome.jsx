@@ -72,7 +72,7 @@ const Welcome = () => {
       >
         <Suspense fallback={null}>
           <Scene progress={animationProgress} />
-          <Postprocessing/>
+          {/* <Postprocessing/> */}
         </Suspense>
       </Canvas>
       

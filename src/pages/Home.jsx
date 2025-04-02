@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
         <Suspense fallback={null}>
-            <Welcome/>
+            <Welcome  />
         </Suspense>
         <BannerProfile/>
         <Lorem lorems={3}/>
