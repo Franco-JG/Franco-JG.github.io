@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -7,13 +7,13 @@ const MAX_DISTANCE = 30;
 const DISPLACEMENT = 1;
 const MAX_Y_DISPERSION = 3;
 const CENTRAL_MASS = 0.1;
-// Antes usabas DT fijo de 0.03, que era una especie de factor de velocidad
-const SPEED_FACTOR = 1.0; // Puedes ajustar esto si va muy lento o muy rápido
+const SPEED_FACTOR = 1.0;
 
 function Particles() {
-  const particlesRef = useRef();
+  const pointsRef = useRef();
+  const geometryRef = useRef();
+  const initializedRef = useRef(false);
   const pointTexture = useLoader(THREE.TextureLoader, 'white.png');
-  const pointColor = useMemo(() => new THREE.Color("rgb(255, 255, 255)"), []);
   const positions = useRef(new Float32Array(PARTICLE_COUNT * 3));
   const sizes = useRef(new Float32Array(PARTICLE_COUNT));
   const angles = useRef(new Float32Array(PARTICLE_COUNT));
@@ -21,6 +21,8 @@ function Particles() {
   const colors = useRef(new Float32Array(PARTICLE_COUNT * 3)); 
 
   const initializeParticles = useCallback(() => {
+    if (!geometryRef.current) return;
+    
     const positionsArray = positions.current;
     const sizesArray = sizes.current;
     const anglesArray = angles.current;
@@ -32,11 +34,11 @@ function Particles() {
       const theta = Math.random() * Math.PI * 2;
       const radius = Math.random() * MAX_DISTANCE + DISPLACEMENT;
       const yDispersion = (radius / MAX_DISTANCE) * MAX_Y_DISPERSION;
-      const distanceRatio = radius / MAX_DISTANCE;  //Normalizar distancia
+      const distanceRatio = radius / MAX_DISTANCE;
 
-      colorsArray[index] = 1 - distanceRatio;           // R (más cercano al centro, más blanco)
-      colorsArray[index + 1] = 1 - distanceRatio;       // G (más cercano al centro, más blanco)
-      colorsArray[index + 2] = 1;                       // B (más lejano del centro, más azul)
+      colorsArray[index] = 1 - distanceRatio;
+      colorsArray[index + 1] = 1 - distanceRatio;
+      colorsArray[index + 2] = 1;
 
       anglesArray[i] = theta;
       radiiArray[i] = radius;
@@ -48,67 +50,83 @@ function Particles() {
       sizesArray[i] = Math.random() < 0.01 ? 0.6 : 0.05 + Math.random() * 0.5;
     }
 
-    if (particlesRef.current) {
-      const positionAttr = new THREE.BufferAttribute(positionsArray, 3);
-      positionAttr.setUsage(THREE.DynamicDrawUsage);
-
-      particlesRef.current.setAttribute('position', positionAttr);
-      particlesRef.current.setAttribute('size', new THREE.BufferAttribute(sizesArray, 1));
-      particlesRef.current.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3)); // Cambiado a 3
-    }
+    // Create attributes
+    geometryRef.current.setAttribute('position', new THREE.BufferAttribute(positionsArray, 3));
+    geometryRef.current.setAttribute('size', new THREE.BufferAttribute(sizesArray, 1));
+    geometryRef.current.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+    
+    // Mark as initialized
+    initializedRef.current = true;
   }, []);
 
   const updateParticles = useCallback((delta) => {
-    if (!particlesRef.current) return;
+    if (!geometryRef.current || !initializedRef.current) return;
 
     const positionsArray = positions.current;
     const anglesArray = angles.current;
     const radiiArray = radii.current;
     const colorsArray = colors.current;
 
-    // Aplicar delta escalado si lo necesitas
     const dt = delta * SPEED_FACTOR;
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const index = i * 3;
 
-      // Incremento de ángulo usando dt (delta frame time en segundos)
       anglesArray[i] += Math.sqrt(CENTRAL_MASS / radiiArray[i]) * dt;
 
-      // Actualización de la posición en x, y
       positionsArray[index] = radiiArray[i] * Math.cos(anglesArray[i]);
       positionsArray[index + 1] = radiiArray[i] * Math.sin(anglesArray[i]);
 
-      // Actualizar colores basados en la distancia
       const distanceRatio = radiiArray[i] / MAX_DISTANCE;
-      colorsArray[index] = 1 - distanceRatio;     // R (más cercano al centro, más blanco)
-      colorsArray[index + 1] = 1 - distanceRatio; // G (más cercano al centro, más blanco)
-      colorsArray[index + 2] = 1;                 // B (más lejano del centro, más azul)
+      colorsArray[index] = 1 - distanceRatio;
+      colorsArray[index + 1] = 1 - distanceRatio;
+      colorsArray[index + 2] = 1;
     }
 
-    particlesRef.current.attributes.position.needsUpdate = true;
-    particlesRef.current.attributes.color.needsUpdate = true;
+    try {
+      // Get the attributes (make sure they exist)
+      const positionAttribute = geometryRef.current.getAttribute('position');
+      const colorAttribute = geometryRef.current.getAttribute('color');
+      
+      if (positionAttribute && colorAttribute) {
+        // Copy updated data to the attribute (safer than using .set())
+        for (let i = 0; i < positionsArray.length; i++) {
+          positionAttribute.array[i] = positionsArray[i];
+        }
+        
+        for (let i = 0; i < colorsArray.length; i++) {
+          colorAttribute.array[i] = colorsArray[i];
+        }
+        
+        // Mark attributes as needing update
+        positionAttribute.needsUpdate = true;
+        colorAttribute.needsUpdate = true;
+      }
+    } catch (error) {
+      console.error("Error updating particle attributes:", error);
+    }
   }, []);
 
   useEffect(() => {
-    initializeParticles();
+    // Wait for the next frame to ensure the geometry is available
+    const timer = setTimeout(() => {
+      initializeParticles();
+    }, 0);
+    
+    return () => clearTimeout(timer);
   }, [initializeParticles]);
 
   useFrame((state, delta) => {
-    // Limita delta a 60ms máximo para evitar saltos grandes en bajas FPS
     const clampedDelta = Math.min(delta, 0.06);
     updateParticles(clampedDelta);
-    // console.log(particlesRef.current.geometry.attributes.color);
-
   });
 
   return (
-    <points frustumCulled={true}>
-      <bufferGeometry ref={particlesRef} />
+    <points ref={pointsRef} frustumCulled={true}>
+      <bufferGeometry ref={geometryRef} />
       <shaderMaterial
         uniforms={{
           pointTexture: { value: pointTexture },
-          // particleColor: { value: pointColor }
         }}
         vertexShader={`
           attribute float size;
