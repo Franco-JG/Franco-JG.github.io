@@ -1,4 +1,5 @@
 import { Container, Typography, Paper, Stack, Divider } from '@mui/material';
+import PropTypes from 'prop-types';
 
 function Lorem({ lorems = 1 }) {
   // Generate an array with the specified number of elements
@@ -34,5 +35,8 @@ function Lorem({ lorems = 1 }) {
     </Container>
   );
 }
+Lorem.propTypes = {
+  lorems: PropTypes.number,
+};
 
 export default Lorem;

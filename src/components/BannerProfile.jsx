@@ -8,7 +8,7 @@ const BannerProfile = () => {
         display: 'flex',
         minHeight: '100vh',
         alignItems: 'center',
-        background: 'radial-gradient(circle at top, #ffdd00, #ffffff)',
+        // background: 'radial-gradient(circle at top, #ffdd00, #ffffff)',
         p: 3,
       }}
     >
@@ -51,7 +51,7 @@ const BannerProfile = () => {
                 justifyContent: 'center',
               }}
             >
-              <Box
+              {/* <Box
                 component="img"
                 src="naruto.svg"
                 alt="Descripción del SVG"
@@ -65,7 +65,8 @@ const BannerProfile = () => {
                     filter: 'brightness(1)',
                   },
                 }}
-              />
+              /> */}
+              <Cube/>
             </Grid2>
 
             {/* Descripción */}

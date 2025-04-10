@@ -1,9 +1,12 @@
-import { createTheme } from '@mui/material'
-import { grey } from '@mui/material/colors'
+import { createTheme } from '@mui/material';
+
 const theme = createTheme({
     cssVariables: true,
-    palette:{
+    palette: {
         mode: 'dark',
+        background: {
+            default: '#000',
+        },
         primary: {
             main: '#f5f5f5',
         },
@@ -13,8 +16,7 @@ const theme = createTheme({
         error: {
             main: '#212121',
         },
-    }
-    
+    },
 });
 
-export default theme
+export default theme;

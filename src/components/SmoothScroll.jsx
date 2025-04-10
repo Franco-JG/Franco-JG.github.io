@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import Lenis from '@studio-freight/lenis';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
@@ -56,6 +57,9 @@ const SmoothScroll = ({ children }) => {
   }, []);
 
   return <>{children}</>;
+};
+SmoothScroll.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default SmoothScroll;

@@ -23,7 +23,7 @@ const Welcome = () => {
 
     // Obtener referencia al elemento
     const welcomeElement = welcomeRef.current;
-    
+
     // Crear ScrollTrigger que mantiene el Welcome fijado durante el scroll
     const scrollTrigger = ScrollTrigger.create({
       trigger: welcomeElement,
@@ -46,22 +46,22 @@ const Welcome = () => {
   }, []);
 
   return (
-    <Box 
-      ref={welcomeRef} 
-      sx={{ 
-        width: '100%', 
+    <Box
+      ref={welcomeRef}
+      sx={{
+        width: '100%',
         height: '100vh',
         position: 'relative',
       }}
     >
       <Canvas
-        camera={{ 
+        camera={{
           position: isMobile ? [0, 0, 15] : [0, 0, 20],
-          fov: 45 
+          fov: 45
         }}
         dpr={Math.min(window.devicePixelRatio, 1.5)}
         gl={{
-          alpha: false, 
+          alpha: false,
           antialias: false,
           powerPreference: 'high-performance'
         }}
@@ -75,7 +75,7 @@ const Welcome = () => {
           {/* <Postprocessing/> */}
         </Suspense>
       </Canvas>
-      
+
       {/* Indicador de progreso (aparece al final) */}
       {animationProgress >= 0.95 && (
         <Box
@@ -91,10 +91,10 @@ const Welcome = () => {
             pointerEvents: 'none', // No debe interferir con clicks
           }}
         >
-          <Stack 
-            direction="row" 
-            spacing={1} 
-            alignItems="center" 
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
             justifyContent="center"
           >
             <Typography variant="body1" sx={{ display: 'inline', mb: 0 }}>

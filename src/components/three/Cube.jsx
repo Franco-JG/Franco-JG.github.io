@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import PropTypes from 'prop-types';
+// import * as THREE from 'three';
 
 // Componente Cube que define la geometría y comportamiento del cubo
 const CubeGeometry = ({ size = 2, wireframeColor = "#ff0000", ...props }) => {
@@ -29,7 +30,7 @@ const CubeGeometry = ({ size = 2, wireframeColor = "#ff0000", ...props }) => {
 };
 
 // Componente principal que incluye el Canvas y el Cubo
-const Cube = ({ wireframeColor = "#ff0000", size = 1.5 }) => {
+const Cube = () => {
   return (
     <Canvas
       style={{ width: '100%', height: '100%' }}
@@ -38,13 +39,13 @@ const Cube = ({ wireframeColor = "#ff0000", size = 1.5 }) => {
       camera={{ position: [0, 0, 4], fov: 50 }} // Posición de cámara fija
       performance={{ min: 0.5 }} // Configuración de rendimiento
     >
-      <CubeGeometry 
-        size={size} 
-        wireframeColor={wireframeColor} 
-        position={[0, 0, 0]} 
-      />
+      <CubeGeometry/>
     </Canvas>
   );
+};
+CubeGeometry.propTypes = {
+  size: PropTypes.number,
+  wireframeColor: PropTypes.string,
 };
 
 export default Cube;

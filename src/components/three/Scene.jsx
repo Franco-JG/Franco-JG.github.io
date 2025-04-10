@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useRef, lazy, useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 
@@ -42,6 +43,10 @@ const Scene = ({ progress = 0 }) => {
       <Particles />
     </group>
   );
+}
+
+Scene.propTypes = {
+  progress: PropTypes.number,
 };
 
 export default Scene;
