@@ -1,17 +1,57 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css'
 
 const Navbar = () => {
-  const location = useLocation();
+  const [activeSection, setActiveSection] = useState('home');
 
   // Memoriza los elementos de navegación para evitar re-renderizados innecesarios
   const navItems = useMemo(() => [
-    { name: 'Proyectos', path: '/projects' },
-    { name: 'Sobre Mí', path: '/about' },
-    { name: 'Contacto', path: '/contact' },
+    { name: 'Home', id: 'home' },
+    { name: 'Sobre Mí', id: 'profile' },
+    { name: 'Proyectos', id: 'projects' },
+    { name: 'Contacto', id: 'contact' },
   ], []);
+
+  // Función para manejar el scroll suave a las secciones
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+      setActiveSection(id);
+    }
+  };
+
+  // Detecta qué sección está visible en la pantalla
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100; // Offset para detectar antes de llegar completamente a la sección
+
+      // Encuentra la sección actualmente visible
+      for (const item of navItems) {
+        const element = document.getElementById(item.id);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(item.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Verificar la sección activa al cargar la página
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [navItems]);
 
   return (
     <>
@@ -41,15 +81,13 @@ const Navbar = () => {
           top: { xs: '10px', sm: '15px', md: '20px' },
           left: '50%',
           transform: 'translateX(-50%)',
-          // width: { xs: '90 %', sm: '75%', md: '50%', lg: '40%' },
-          // height: { xs: '40px', sm: '45px', md: '50px' },
           height: '40px',
           maxWidth: '800px',
           zIndex: 2,
           borderRadius: '15px',
           backgroundColor: '#000',
           display: 'flex',
-          alignItems: 'center', // Centrado vertical
+          alignItems: 'center',
         }}
       >
         {/* Contenedor para todo el contenido del navbar */}
@@ -57,27 +95,27 @@ const Navbar = () => {
           sx={{
             display: 'flex',
             width: '100%',
-            justifyContent: 'space-evenly', // Espacio igual entre elementos
-            alignItems: 'center', // Centrado vertical
-            // outline: '1px solid blue'
+            justifyContent: 'space-evenly', 
+            alignItems: 'center',
           }}
         >
           {/* Enlaces de navegación */}
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'space-evenly', // Espacio igual entre elementos
-              alignItems: 'center', // Centrado vertical
-              flex: '1 1 auto', // Toma el espacio disponible pero respeta otros elementos
-              // outline: '1px solid green',
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+              flex: '1 1 auto',
             }}
           >
             {/* Logo */}
-            <Link to="/" style={{ 
-              display: 'flex', 
-              // alignItems: 'center', // Centrado vertical
-              // outline: '1px solid white',
-            }}>
+            <Box
+              onClick={() => scrollToSection('home')}
+              sx={{ 
+                display: 'flex',
+                cursor: 'pointer',
+              }}
+            >
               <Box
                 component="img"
                 src="f.svg"
@@ -87,54 +125,39 @@ const Navbar = () => {
                   filter: 'invert(1) grayscale(1) brightness(0.5)',
                   transition: 'filter 0.3s ease',
                   '&:hover': {
-                    filter: 'invert(1)', // El logo se vuelve blanco al hover
+                    filter: 'invert(1)',
                   },
-              // outline: '1px solid black',
-
-                  
                 }}
               />
-            </Link>
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                style={{
-                  color: location.pathname === item.path ? 'rgba(250,216,0,1.0)' : 'rgba(255,255,255,0.5)',
-                  backgroundColor: location.pathname === item.path ? 'rgba(255,216,0,0.2)' : 'transparent',
+            </Box>
+            
+            {navItems.slice(1).map((item) => (
+              <Box
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                sx={{
+                  color: activeSection === item.id ? 'rgba(250,216,0,1.0)' : 'rgba(255,255,255,0.5)',
+                  backgroundColor: activeSection === item.id ? 'rgba(255,216,0,0.2)' : 'transparent',
                   padding: '5px 10px',
                   textDecoration: 'none',
                   fontWeight: 600,
                   transition: 'all 0.3s ease',
                   borderRadius: '12px',
                   position: 'relative',
-                  whiteSpace: 'nowrap', // Evitar que el texto se corte
+                  whiteSpace: 'nowrap',
                   display: 'flex',
-                  alignItems: 'center', // Centrado vertical
-                  justifyContent: 'center', // Centrado horizontal
-                  width: 'auto', // Ancho automático basado en el contenido
-                  // outline: '1px solid red'
-                }}
-                // className="nav-link"
-                onMouseEnter={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.color = '#ffffff';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.5)';
-                  }
-                }}
-              >
-                <span style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 'auto',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
                   fontSize: { xs: '13px', sm: '14px', md: '16px' },
                   padding: { xs: '4px 8px', sm: '5px 10px', md: '5px 12px' },
-                  display: 'block', // Asegura que el espacio se aplica correctamente
-                }}>
-                  {item.name}
-                </span>
-              </Link>
+                  
+                }}
+              >
+                {item.name}
+              </Box>
             ))}
           </Box>
         </Box>

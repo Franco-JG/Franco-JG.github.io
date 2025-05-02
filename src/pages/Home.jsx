@@ -7,11 +7,20 @@ import BannerProfile from "../components/BannerProfile";
 const Home = () => {
   return (
     <>
-        <Suspense fallback={null}>
-            <Welcome  />
-        </Suspense>
-        <BannerProfile/>
-        <Lorem lorems={3}/>
+        <section id="home">
+          <Suspense fallback={null}>
+              <Welcome  />
+          </Suspense>
+        </section>
+        <section id="profile">
+          <BannerProfile />
+        </section>
+        <section id="projects">
+          <Lorem lorems={2}/>
+        </section>
+        <section id="contact">
+          <Lorem />
+        </section>
     </>
   );
 };
