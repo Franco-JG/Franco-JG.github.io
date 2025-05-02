@@ -1,22 +1,19 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/navbar/Navbar';
 import SmoothScroll from './components/SmoothScroll';
+import './styles/App.css'
 
 const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
+const Navbar = lazy(() => import('./components/navbar/Navbar'));
 
 function App() {
   return (
     <Router>
       <SmoothScroll>
         <Navbar />
-        <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
           </Routes>
-        </Suspense>
       </SmoothScroll>
     </Router>
   );

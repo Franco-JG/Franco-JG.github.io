@@ -1,25 +1,23 @@
 import Welcome from "../components/Welcome";
 import Lorem from "../components/Lorem";
-import { Suspense } from "react";
 import BannerProfile from "../components/BannerProfile";
+import Contact from "../components/Contact";
 
 
 const Home = () => {
   return (
     <>
         <section id="home">
-          <Suspense fallback={null}>
-              <Welcome  />
-          </Suspense>
+          <Welcome  />
         </section>
         <section id="profile">
           <BannerProfile />
         </section>
         <section id="projects">
-          <Lorem lorems={2}/>
+          <Lorem lorems={6}/>
         </section>
         <section id="contact">
-          <Lorem />
+          <Contact />
         </section>
     </>
   );

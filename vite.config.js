@@ -9,7 +9,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'three-core': ['three'],
-          'react-three': ['@react-three/fiber', '@react-three/postprocessing'],
+          'react-three': ['@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
           'vendor': ['react', 'react-dom'],
           'animations': ['gsap', '@studio-freight/lenis', 'gsap/ScrollTrigger']
         }

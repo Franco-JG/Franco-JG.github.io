@@ -37,6 +37,17 @@ const Scene = ({ progress = 0 }) => {
     
   }, [progress, camera, rotationEndX, rotationEndY, positionEndX, positionEndY, positionEndZ, cameraEndX]);
 
+  // Emitir evento de carga completa cuando el componente se monta completamente
+  useEffect(() => {
+    // Pequeño retraso para asegurar que todo esté renderizado
+    const timer = setTimeout(() => {
+      // Disparar evento que Loader está escuchando
+      window.dispatchEvent(new Event('scene-loaded'));
+    }, 1000); // 1 segundo de retraso para asegurar que todo esté listo
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <group ref={ref}>
       <Circle />

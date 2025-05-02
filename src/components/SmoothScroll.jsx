@@ -10,7 +10,7 @@ const SmoothScroll = ({ children }) => {
   // Inicializar Lenis al montar el componente
   useEffect(() => {
     
-    // Importante: configura ScrollTrigger para usar el método de Lenis para obtener el progreso del scroll
+    //! Importante: configura ScrollTrigger para usar el método de Lenis para obtener el progreso del scroll
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {

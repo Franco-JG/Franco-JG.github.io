@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, Suspense, lazy } from 'react';
+import { useLayoutEffect, useRef, useState, Suspense, lazy, useEffect } from 'react';
 import { Canvas } from "@react-three/fiber";
 import { Color } from "three";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,6 +7,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import gsap from 'gsap';
 
 import Scene from "./three/Scene";
+import Loader from "./Loader";
+
 const Postprocessing = lazy(() => import('./three/Postprocessing'));
 
 // Registrar el plugin ScrollTrigger
@@ -16,6 +18,23 @@ const Welcome = () => {
   const welcomeRef = useRef();
   const isMobile = window.innerWidth < 768;
   const [animationProgress, setAnimationProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Escuchar el evento scene-loaded para ocultar el loader
+  useEffect(() => {
+    const handleSceneLoaded = () => {
+      // Dar un pequeño retraso para una transición más suave
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    };
+
+    window.addEventListener('scene-loaded', handleSceneLoaded);
+    
+    return () => {
+      window.removeEventListener('scene-loaded', handleSceneLoaded);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     // Resetear scroll al inicio
@@ -46,65 +65,68 @@ const Welcome = () => {
   }, []);
 
   return (
-    <Box
-      ref={welcomeRef}
-      sx={{
-        width: '100%',
-        height: '100vh',
-        position: 'relative',
-      }}
-    >
-      <Canvas
-        camera={{
-          position: isMobile ? [0, 0, 15] : [0, 0, 20],
-          fov: 45
+    <>
+      {isLoading && <Loader />}
+      <Box
+        ref={welcomeRef}
+        sx={{
+          width: '100%',
+          height: '100vh',
+          position: 'relative',
         }}
-        dpr={Math.min(window.devicePixelRatio, 1.5)}
-        gl={{
-          alpha: false,
-          antialias: false,
-          powerPreference: 'high-performance'
-        }}
-        scene={{
-          background: new Color('black')
-        }}
-        shadows={false}
       >
-        <Suspense fallback={null}>
-          <Scene progress={animationProgress} />
-          <Postprocessing/>
-        </Suspense>
-      </Canvas>
-
-      {/* Indicador de progreso (aparece al final) */}
-      {animationProgress >= 0.95 && (
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: '30px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            color: 'white',
-            textAlign: 'center',
-            zIndex: 100,
-            opacity: (animationProgress - 0.95) * 20, // Aparece gradualmente
-            pointerEvents: 'none', // No debe interferir con clicks
+        <Canvas
+          camera={{
+            position: isMobile ? [0, 0, 15] : [0, 0, 20],
+            fov: 45
           }}
+          dpr={Math.min(window.devicePixelRatio, 1.5)}
+          gl={{
+            alpha: false,
+            antialias: false,
+            powerPreference: 'high-performance'
+          }}
+          scene={{
+            background: new Color('black')
+          }}
+          shadows={false}
         >
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="center"
+          <Suspense fallback={null}>
+            <Scene progress={animationProgress} />
+            <Postprocessing/>
+          </Suspense>
+        </Canvas>
+
+        {/* Indicador de progreso (aparece al final) */}
+        {animationProgress >= 0.95 && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: '30px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 100,
+              opacity: (animationProgress - 0.95) * 20, // Aparece gradualmente
+              pointerEvents: 'none', // No debe interferir con clicks
+            }}
           >
-            <Typography variant="body1" sx={{ display: 'inline', mb: 0 }}>
-              Ver más
-            </Typography>
-            <ExpandMoreIcon sx={{ fontSize: 28, mt: 0.5 }} />
-          </Stack>
-        </Box>
-      )}
-    </Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="body1" sx={{ display: 'inline', mb: 0 }}>
+                Ver más
+              </Typography>
+              <ExpandMoreIcon sx={{ fontSize: 28, mt: 0.5 }} />
+            </Stack>
+          </Box>
+        )}
+      </Box>
+    </>
   );
 }
 
