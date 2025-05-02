@@ -1,0 +1,1 @@
+import{j as e,k as s}from"./react-three-DV1vh2tu.js";import{e as r}from"./three-core-C0_18ck3.js";const t=()=>e.jsx(s,{children:e.jsxs("mesh",{children:[e.jsx("circleGeometry",{args:[.5,16]}),e.jsx("meshStandardMaterial",{color:new r("rgb(255, 255, 255)"),emissive:new r("rgb(255, 255, 255)"),emissiveIntensity:5.5})]})});export{t as default};

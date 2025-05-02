@@ -1,0 +1,1 @@
+import{j as n,f as t,w as s,B as e}from"./react-three-DV1vh2tu.js";import"./three-core-C0_18ck3.js";const r=()=>n.jsx(t,{children:n.jsx(s,{intensity:1,luminanceThreshold:.4,luminanceSmoothing:.8,mipmapBlur:!0,blendFunction:e.ALPHA})});export{r as default};
