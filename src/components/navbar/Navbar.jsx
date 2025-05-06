@@ -1,8 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
-import { Box, Tooltip, IconButton, useMediaQuery, useTheme, Drawer, List, ListItem } from '@mui/material';
+import { Box, IconButton, useMediaQuery, useTheme, Drawer, List, ListItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import CodeIcon from '@mui/icons-material/Code';
 import EmailIcon from '@mui/icons-material/Email';
@@ -116,6 +115,7 @@ const Navbar = () => {
             cursor: 'pointer',
             px: { xs: 2, sm: 2.5 },
             py: 1,
+            whiteSpace: 'nowrap',
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.1)',
               color: '#fff',
@@ -131,19 +131,17 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Fondo con efecto de blur - optimizado */}
       <Box
         sx={{
           position: "fixed",
           top: 0,
           left: 0,
           width: "100%",
-          height: { xs: "120px", sm: "150px", md: "200px" },
+          height: { xs: "150px", sm: "175px", md: "200px" },
           zIndex: 1,
           pointerEvents: "none",
         }}
       >
-        {/* Capa de fondo con efecto de blur */}
         {[...Array(8)].map((_, index) => (
           <Box key={index} className="blur-layer" />
         ))}

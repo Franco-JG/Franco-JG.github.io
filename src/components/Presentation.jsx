@@ -1,9 +1,6 @@
-import { Box, Typography, Container, Stack, Button } from '@mui/material';
+import { Box, Typography, Stack, Button } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LanguageIcon from '@mui/icons-material/Language';
 import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 
@@ -75,12 +72,12 @@ const Presentation = () => {
             </Box> */}
 
         {/* Portfolio/Website */}
-        <Box
+        {/* <Box
           sx={{ color: '#ff5cb8', fontSize: '1.8rem', cursor: 'pointer' }}
           onClick={() => window.open('https://geovani-franco.me', '_blank')}
         >
           <LanguageIcon fontSize="inherit" />
-        </Box>
+        </Box> */}
 
         {/* <Box sx={{ color: '#ff5cb8', fontSize: '1.8rem', cursor: 'pointer' }}>
               <TwitterIcon fontSize="inherit" />

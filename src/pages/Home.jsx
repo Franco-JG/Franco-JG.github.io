@@ -1,7 +1,7 @@
 import Welcome from "../components/Welcome";
-import Lorem from "../components/Lorem";
 import BannerProfile from "../components/BannerProfile";
 import Contact from "../components/Contact";
+import Projects from "../components/Projects";
 
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
           <BannerProfile />
         </section>
         <section id="projects">
-          <Lorem lorems={6}/>
+          <Projects/>
         </section>
         <section id="contact">
           <Contact />

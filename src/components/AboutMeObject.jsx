@@ -40,21 +40,21 @@ const AboutMeObject = () => {
             </Typography>
 
             <Typography component="div" sx={{ fontFamily: 'monospace', pl: 2 , fontSize: 'inherit'}}>
-              <span style={{ color: '#9cdcfe' }}>name</span>: <span style={{ color: '#ce9178' }}>'Franco-JG'</span>,
+              <span style={{ color: '#9cdcfe' }}>name</span>: <span style={{ color: '#ce9178' }}>&apos;Franco-JG&apos;</span>,
             </Typography>
 
             <Typography component="div" sx={{ fontFamily: 'monospace', pl: 2 , fontSize: 'inherit'}}>
               <span style={{ color: '#9cdcfe' }}>skills</span>: [
-              <span style={{ color: '#ce9178' }}>'React'</span>,
-              <span style={{ color: '#ce9178' }}>'PHP'</span>,
-              <span style={{ color: '#ce9178' }}>'ThreeJS'</span>,
-              <span style={{ color: '#ce9178' }}>'MySQL'</span>,
+              <span style={{ color: '#ce9178' }}>&apos;React&apos;</span>,
+              <span style={{ color: '#ce9178' }}>&apos;PHP&apos;</span>,
+              <span style={{ color: '#ce9178' }}>&apos;ThreeJS&apos;</span>,
+              <span style={{ color: '#ce9178' }}>&apos;MySQL&apos;</span>,
             </Typography>
 
             <Typography component="div" sx={{ fontFamily: 'monospace', pl: 4, fontSize: 'inherit' }}>
-                <span style={{ color: '#ce9178' }}>'Docker'</span>,
-              <span style={{ color: '#ce9178' }}>'Tableau'</span>,
-              <span style={{ color: '#ce9178' }}>'Blender'</span>,
+                <span style={{ color: '#ce9178' }}>&apos;Docker&apos;</span>,
+              <span style={{ color: '#ce9178' }}>&apos;Tableau&apos;</span>,
+              <span style={{ color: '#ce9178' }}>&apos;Blender&apos;</span>,
               <span style={{ color: '#c586c0' }}>...</span>
               <span style={{ color: '#9cdcfe' }}>learning</span>],
             </Typography>

@@ -1,8 +1,6 @@
 import { 
     Box, 
     Typography, 
-    TextField, 
-    Button, 
     Container, 
     Grid2, 
     Paper, 
@@ -37,8 +35,7 @@ import {
         </Typography>
         
         <Grid2 container spacing={4} justifyContent="center">
-          {/* Información de contacto */}
-          <Grid2 xs={12} md={5}>
+          <Grid2 size={{ xs: 12, md: 6}}>
             <Paper 
               elevation={3}
               sx={{ 
@@ -55,8 +52,8 @@ import {
                 ¡Hablemos!
               </Typography>
               
-              <Typography variant="body1" paragraph sx={{ mb: 4, color: '#f5f5f5' }}>
-                Estoy interesado en oportunidades de desarrollo frontend. Si tienes alguna pregunta o propuesta, no dudes en contactarme.
+              <Typography variant="body1" sx={{ mb: 4, color: '#f5f5f5' }}>
+                Estoy interesado en oportunidades de desarrollo. Si tienes alguna pregunta o propuesta, no dudes en contactarme.
               </Typography>
               
               <Box sx={{ mb: 4 }}>
