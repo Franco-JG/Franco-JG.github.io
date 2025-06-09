@@ -51,7 +51,7 @@ const Welcome = () => {
       pin: true, // Mantiene el elemento fijado durante la animación
       scrub: 3, // Suaviza el efecto al hacer scroll (valor mayor = más suave)
       markers: false, // Útil para depuración, true para desarrollo
-      anticipatePin: 1, // Mejora el rendimiento
+      // anticipatePin: 1, // Mejora el rendimiento
       onUpdate: (self) => {
         // Pasamos el progreso al Scene como state
         setAnimationProgress(self.progress);
@@ -93,7 +93,7 @@ const Welcome = () => {
         >
           <Suspense fallback={null}>
             <Scene progress={animationProgress} />
-            <Postprocessing/>
+            {/* <Postprocessing/> */}
           </Suspense>
         </Canvas>
 
