@@ -16,5 +16,5 @@ export default defineConfig({
       }
     }
   },
-  // base: '/Franco-JG.github.io/'
+  base: '/'
 })
