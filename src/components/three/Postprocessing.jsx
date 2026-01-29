@@ -8,7 +8,7 @@ const Postprocessing = () => {
 
       >
         <Bloom
-          intensity={1}
+          intensity={100}
           luminanceThreshold={0.4}
           luminanceSmoothing={0.8}
           mipmapBlur

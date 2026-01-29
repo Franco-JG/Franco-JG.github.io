@@ -3,10 +3,10 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const PARTICLE_COUNT = 200;
-const MAX_DISTANCE = 30;
-const DISPLACEMENT = 1;
+const MAX_DISTANCE = 20;
+const DISPLACEMENT = 3;
 const MAX_Y_DISPERSION = 3;
-const CENTRAL_MASS = 0.1;
+const CENTRAL_MASS = 0.5;
 const SPEED_FACTOR = 1.0;
 
 function Particles() {
@@ -38,7 +38,7 @@ function Particles() {
 
       colorsArray[index] = 1 - distanceRatio;
       colorsArray[index + 1] = 1 - distanceRatio;
-      colorsArray[index + 2] = 1;
+      colorsArray[index + 2] = 1 - distanceRatio;
 
       anglesArray[i] = theta;
       radiiArray[i] = radius;
@@ -47,7 +47,7 @@ function Particles() {
       positionsArray[index + 1] = radius * Math.sin(theta);
       positionsArray[index + 2] = (Math.random() - 0.5) * yDispersion * 2;
 
-      sizesArray[i] = Math.random() < 0.01 ? 0.6 : 0.05 + Math.random() * 0.5;
+      sizesArray[i] = Math.random() < 0.01 ? 0.9 : 0.02 + Math.random() * 0.6;
     }
 
     // Create attributes

@@ -26,11 +26,11 @@ const Presentation = () => {
           mb: 1
         }}
       >
-        Hola,
+        Hola
       </Typography>
 
       <Typography variant="h3" sx={{ mb: 1 }}>
-        Soy <span style={{ color: '#ff5cb8', fontWeight: 'bold' }}>Franco</span>, aspirante a
+        Soy <span style={{ color: '#ff5cb8', fontWeight: 'bold' }}>Franco</span>, 
       </Typography>
 
       <Typography
@@ -41,12 +41,12 @@ const Presentation = () => {
           mb: 3
         }}
       >
-        Desarrollador Web
+        Ingeniero de Software.
       </Typography>
 
       {/* Texto adicional */}
       <Typography variant="body1" sx={{ mb: 3, color: '#f5f5f5' }}>
-        Tu aliado en el front-end
+        Apasionado de la tecnología y el desarrollo web.
       </Typography>
 
       {/* Iconos sociales */}
