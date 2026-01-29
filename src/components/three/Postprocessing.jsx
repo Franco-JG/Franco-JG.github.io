@@ -8,9 +8,9 @@ const Postprocessing = () => {
 
       >
         <Bloom
-          intensity={100}
+          intensity={1}
           luminanceThreshold={0.4}
-          luminanceSmoothing={0.8}
+          luminanceSmoothing={1.8}
           mipmapBlur
           blendFunction={BlendFunction.ALPHA}
           // opacity={0.7}
