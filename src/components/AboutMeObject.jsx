@@ -40,13 +40,13 @@ const AboutMeObject = () => {
         </Typography>
 
         <Typography component="div" sx={{ fontFamily: 'monospace', pl: 2, fontSize: 'inherit' }}>
-          <span style={{ color: '#9cdcfe' }}>name</span>: <span style={{ color: '#ce9178' }}>&apos;Franco-JG&apos;</span>,
+          <span style={{ color: '#9cdcfe' }}>name</span>: <span style={{ color: '#ce9178' }}>&apos;Geovani Franco&apos;</span>,
         </Typography>
 
         <Typography component="div" sx={{ fontFamily: 'monospace', pl: 2, fontSize: 'inherit' }}>
           <span style={{ color: '#9cdcfe' }}>skills</span>: [
           <span style={{ color: '#ce9178' }}>&apos;Next.js&apos;</span>,
-          <span style={{ color: '#ce9178' }}>&apos;Stripe&apos;</span>,
+          <span style={{ color: '#ce9178' }}>&apos;REST APIs&apos;</span>,
           <span style={{ color: '#ce9178' }}>&apos;PostgreSQL&apos;</span>,
           <span style={{ color: '#ce9178' }}>&apos;Docker&apos;</span>,
         </Typography>
