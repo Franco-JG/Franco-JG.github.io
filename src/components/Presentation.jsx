@@ -17,7 +17,7 @@ const Presentation = () => {
   return (
     <Box sx={{
       flex: { xs: '1', md: '0 1 45%' },
-      maxWidth: { md: '580px' }
+      width: '100%'
     }}>
       <Typography
         variant="h3"
@@ -99,7 +99,13 @@ const Presentation = () => {
       </Stack>
 
       {/* Botones de acción */}
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+      <Stack 
+        direction={{ xs: 'column', sm: 'row' }} 
+        spacing={2}
+        sx={{
+          alignItems: 'center',
+        }}
+        >
         <Button
           variant="outlined"
           startIcon={<EmailIcon />}

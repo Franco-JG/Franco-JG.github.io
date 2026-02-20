@@ -6,15 +6,15 @@ import Presentation from './Presentation';
 
 const BannerProfile = () => {
   return (
-    <Container maxWidth="xl" sx={{ py: 8, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Container maxWidth="lg" sx={{ py: 8, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Box sx={{
         width: '100%',
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        gap: { xs: 8, md: 8 },
+        gap: { xs: 8, md: 5 },
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        mx: 'auto',
+        justifyContent: 'center',
+        // mx: 'auto',
         maxWidth: '1600px',
       }}>
         <Presentation/>
